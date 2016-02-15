@@ -9,6 +9,7 @@ namespace SeriesXAPI.Tests
 
         [TestCase(1, 1, 1)]
         [TestCase(1, 2, 1)]
+        [TestCase(1, 4, 3)]
         [TestCase(3, 1, 3)]
         [TestCase(3, 2, 9)]
         [TestCase(3, 3, 57)]

@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 
@@ -7,48 +6,33 @@ namespace SeriesXAPI
 {
     public class SeriesX
     {
-        private readonly Queue<BigInteger> _seriesX = new Queue<BigInteger>(4);
-
-        public SeriesX()
-        {
-            _seriesX.Enqueue(new BigInteger(1));
-            _seriesX.Enqueue(new BigInteger(1));
-            _seriesX.Enqueue(new BigInteger(1));
-        }
+        private static readonly BigInteger DefaultElement = new BigInteger(1);
+        private readonly Queue<BigInteger> _seriesX = new Queue<BigInteger> (new[] { DefaultElement, DefaultElement, DefaultElement } );
+        private BigInteger _initialPosition = new BigInteger(1);
 
         public BigInteger GetElementValue(BigInteger divisor, BigInteger position)
         {
-            var initialPosition = new BigInteger(1);
-            foreach (var element in _seriesX)
+            if (divisor == DefaultElement)
             {
-                if (element%divisor == 0)
+                if (position <= _seriesX.Count)
                 {
-                    if (initialPosition == position)
-                    {
-                        return element;
-                    }
-                    else
-                    {
-                        initialPosition ++;
-                    }
+                    return DefaultElement;
                 }
+                _initialPosition = new BigInteger(_seriesX.Count+1);
             }
             while (true)
             {
                 var element = _seriesX.Aggregate(BigInteger.Add);
                 if (element % divisor == 0)
                 {
-                    if (initialPosition == position)
+                    if (_initialPosition == position)
                     {
                         return element;
                     }
-                    else
-                    {
-                        initialPosition++;
-                    }
+                    _initialPosition++;
                 }
-                _seriesX.Enqueue(element);
                 _seriesX.Dequeue();
+                _seriesX.Enqueue(element);
             }
         }
     }
